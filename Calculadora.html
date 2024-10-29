@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Electrólisis</title>
+</head>
+<body>
+    <h1>Calculadora de Electrólisis</h1>
+    <p>Ingresa la cantidad de agua en mililitros y selecciona la velocidad para obtener el voltaje recomendado y la producción aproximada en 1 minuto.</p>
+    
+    <form id="electrolisisForm">
+        <label for="mlWater">Cantidad de agua (ml):</label>
+        <input type="number" id="mlWater" name="mlWater" min="1" required>
+        
+        <label for="speed">Velocidad:</label>
+        <select id="speed" name="speed">
+            <option value="slow">Lento</option>
+            <option value="normal">Normal</option>
+            <option value="fast">Rápido</option>
+        </select>
+        
+        <button type="button" onclick="calculateElectrolysis()">Calcular</button>
+    </form>
+    
+    <h2>Resultado:</h2>
+    <p id="result">Ingrese los datos y presione "Calcular".</p>
+    
+    <script>
+        function calculateElectrolysis() {
+            // Valores de producción aproximados (ml/min por ml de agua) para cada velocidad
+            const productionRates = {
+                slow: 0.02,  // Lento
+                normal: 0.05,  // Normal
+                fast: 0.08  // Rápido
+            };
+            
+            // Rango de voltaje recomendado para cada velocidad
+            const voltageRanges = {
+                slow: [3, 6],
+                normal: [7, 12],
+                fast: [13, 18]
+            };
+
+            // Obtener valores del formulario
+            const mlWater = parseFloat(document.getElementById("mlWater").value);
+            const speed = document.getElementById("speed").value;
+
+            // Calcular la producción aproximada en ml de hidrógeno en 1 minuto
+            const productionPerMin = (productionRates[speed] * mlWater).toFixed(2);
+            const voltageRange = voltageRanges[speed];
+
+            // Mostrar el resultado
+            document.getElementById("result").innerHTML = 
+                `<strong>Voltaje recomendado:</strong> ${voltageRange[0]}V - ${voltageRange[1]}V<br>
+                 <strong>Producción estimada:</strong> ${productionPerMin} ml de hidrógeno en 1 minuto`;
+        }
+    </script>
+</body>
+</html>
